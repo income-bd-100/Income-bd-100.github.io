@@ -1,47 +1,61 @@
-<script>
-  let balance = 0;
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>আপনার টাস্কসমূহ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>স্বাগতম: <span id="userPhone"></span></h2>
+    <h3>বর্তমান ব্যালেন্স: <span id="balance">৳0</span></h3>
+    <p>প্রতি টাস্ক কমপ্লিটে পাবেন ৳৫০!</p>
+    <ul class="task-list" id="taskList"></ul>
+<br><br>
+<button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;">💰 Withdraw</button>
 
-  function updateBalance(amount) {
-    balance += amount;
-    document.getElementById("balance").innerText = balance;
-  }
+  </div>
 
-  function completeTask(button) {
-    if (!button.disabled) {
-      updateBalance(30); // প্রতি টাস্ক ৩০ টাকা
-      button.innerText = "Done";
-      button.disabled = true;
+  <script>
+    const phone = localStorage.getItem("userPhone");
+    const balanceEl = document.getElementById("balance");
+    const phoneEl = document.getElementById("userPhone");
+    const taskListEl = document.getElementById("taskList");
+
+    const channels = [
+      "https://t.me/channel1", "https://t.me/channel2", "https://t.me/channel3",
+      "https://t.me/channel4", "https://t.me/channel5", "https://t.me/channel6",
+      "https://t.me/channel7", "https://t.me/channel8", "https://t.me/channel9",
+      "https://t.me/channel10"
+    ];
+
+    let balance = parseInt(localStorage.getItem("userBalance")) || 0;
+    let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
+
+    phoneEl.innerText = phone;
+    balanceEl.innerText = `৳${balance}`;
+
+    channels.forEach((link, index) => {
+      const isDone = completedTasks.includes(index);
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <a href="${link}" target="_blank">Join Channel ${index + 1}</a>
+        <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
+          ${isDone ? "✅ Done" : "✅ কমপ্লিট"}
+        </button>
+      `;
+      taskListEl.appendChild(li);
+    });
+
+    function completeTask(index) {
+      if (!completedTasks.includes(index)) {
+        completedTasks.push(index);
+        balance += 50;
+        localStorage.setItem("userBalance", balance);
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        location.reload();
+      }
     }
-  }
-
-  function showWithdraw() {
-    document.getElementById("withdraw-form").style.display = "block";
-  }
-
-  function submitWithdraw() {
-    let method = document.getElementById("method").value;
-    let account = document.getElementById("account").value;
-
-    if (!account) {
-      alert("Please enter your account/wallet number.");
-      return;
-    }
-
-    alert(`Withdraw request sent to ${method} number: ${account}`);
-  }
-
-  // Load tasks dynamically
-  const tasksContainer = document.getElementById("tasks");
-  for (let i = 1; i <= 10; i++) {
-    const taskDiv = document.createElement("div");
-    taskDiv.className = "task";
-    taskDiv.innerHTML = `
-      <a href="https://t.me/example_channel${i}" target="_blank">Join Channel ${i}</a>
-      <button onclick="completeTask(this)">Get</button>
-    `;
-    tasksContainer.appendChild(taskDiv);
-  }
-
-  // Set name (optional)
-  document.getElementById("username").innerText = "Hi";
-</script>
+  </script>
+</body>
+</html>
