@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title> </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>: <span id="userPhone"></span></h2>
+    <h3> : <span id="balance">0</span></h3>
+    <p>    !</p>
+    <ul class="task-list" id="taskList"></ul>
+
+    <br><br>
+    <button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;"> Withdraw</button>
+  </div>
+
+  <script>
+    const phone = localStorage.getItem("userPhone");
+    const balanceEl = document.getElementById("balance");
+    const phoneEl = document.getElementById("userPhone");
+    const taskListEl = document.getElementById("taskList");
+
+    const channels = [
+      "https://t.me/channel1", "https://t.me/channel2", "https://t.me/channel3",
+      "https://t.me/channel4", "https://t.me/channel5", "https://t.me/channel6",
+      "https://t.me/channel7", "https://t.me/channel8", "https://t.me/channel9",
+      "https://t.me/channel10"
+    ];
+
+    let balance = parseInt(localStorage.getItem("userBalance")) || 0;
+    let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
+
+    phoneEl.innerText = phone;
+    balanceEl.innerText = `${balance}`;
+
+    channels.forEach((link, index) => {
+      const isDone = completedTasks.includes(index);
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <a href="${link}" target="_blank">Join Channel ${index + 1}</a>
+        <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
+          ${isDone ? " Done" : " "}
+        </button>
+      `;
+      taskListEl.appendChild(li);
+    });
+
+    function completeTask(index) {
+      if (!completedTasks.includes(index)) {
+        completedTasks.push(index);
+        balance += 50;
+        localStorage.setItem("userBalance", balance);
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>

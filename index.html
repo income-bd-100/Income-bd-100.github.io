@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>টেলিগ্রাম ইনকাম সাইট</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>টেলিগ্রাম ইনকাম সাইটে স্বাগতম</h2>
+    <p>প্রতি টাস্কে ৫০ টাকা আয় করুন!</p>
+    <form onsubmit="startTasks(event)">
+      <input type="text" id="phone" placeholder="আপনার নাম লিখুন এখানে" required>
+      <button type="submit">শুরু করুন</button>
+    </form>
+  </div>
+
+  <script>
+    function startTasks(e) {
+      e.preventDefault();
+      const phone = document.getElementById('phone').value;
+      localStorage.setItem("userPhone", phone);
+      localStorage.setItem("userBalance", "0");
+      localStorage.setItem("completedTasks", "[]");
+      window.location.href = "tasks.html";
+    }
+  </script>
+</body>
+</html>

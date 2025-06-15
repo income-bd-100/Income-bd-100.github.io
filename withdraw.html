@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>টাকা তুলুন</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>💰 টাকা তুলুন</h2>
+    <p>আপনার বর্তমান ব্যালেন্স: <strong id="currentBalance">৳0</strong></p>
+
+    <form onsubmit="submitWithdraw(event)">
+      <label>পেমেন্ট মেথড:</label><br>
+      <select id="method" required>
+        <option value="">--একটি নির্বাচন করুন--</option>
+        <option value="bkash">বিকাশ</option>
+        <option value="nagad">নগদ</option>
+        <option value="binance">Binance</option>
+      </select><br><br>
+
+      <label>একাউন্ট নম্বর / Binance UID:</label><br>
+      <input type="text" id="account" required><br><br>
+
+      <label>টাকা (৳):</label><br>
+      <input type="number" id="amount" required><br><br>
+
+      <button type="submit">✅ Withdraw রিকোয়েস্ট পাঠান</button>
+    </form>
+
+    <p id="message" style="color: green; font-weight: bold;"></p>
+  </div>
+
+  <script>
+    const balance = parseInt(localStorage.getItem("userBalance")) || 0;
+    document.getElementById("currentBalance").innerText = `৳${balance}`;
+
+    function submitWithdraw(e) {
+      e.preventDefault();
+      const method = document.getElementById("method").value;
+      const account = document.getElementById("account").value;
+      const amount = parseInt(document.getElementById("amount").value);
+      const messageEl = document.getElementById("message");
+
+      if (amount > balance) {
+        messageEl.style.color = "red";
+        messageEl.innerText = "❌ আপনার পর্যাপ্ত ব্যালেন্স নেই!";
+        return;
+      }
+
+      messageEl.style.color = "green";
+      messageEl.innerText = `✅ Withdraw রিকোয়েস্ট (${method}) গ্রহণ করা হয়েছে।`;
+
+      // ব্যালেন্স আপডেট
+      const newBalance = balance - amount;
+      localStorage.setItem("userBalance", newBalance);
+      setTimeout(() => {
+        window.location.href = "tasks.html";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
