@@ -1,61 +1,163 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> </title>
-  <link rel="stylesheet" href="style.css">
+  <title>Task Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e8f0fe;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0077cc;
+      margin-bottom: 5px;
+    }
+
+    .balance {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: green;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f0f8ff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .task a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: bold;
+    }
+
+    .task button {
+      background-color: #28a745;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .withdraw-btn {
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .withdraw-form {
+      display: none;
+      margin-top: 20px;
+    }
+
+    select, input {
+      padding: 8px;
+      width: 80%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .submit-withdraw {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h2>: <span id="userPhone"></span></h2>
-    <h3> : <span id="balance">0</span></h3>
-    <p>    !</p>
-    <ul class="task-list" id="taskList"></ul>
+    <h2>👤 User: <span id="username">Bappa</span></h2>
+    <div class="balance">💰 Balance: <span id="balance">0</span>৳</div>
 
-    <br><br>
-    <button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;"> Withdraw</button>
+    <div id="tasks"></div>
+
+    <button class="withdraw-btn" onclick="showWithdraw()">Withdraw</button>
+
+    <div class="withdraw-form" id="withdraw-form">
+      <h3>Withdraw Info</h3>
+      <select id="method">
+        <option value="bkash">Bkash</option>
+        <option value="nagad">Nagad</option>
+        <option value="binance">Binance</option>
+      </select><br>
+      <input type="text" id="account" placeholder="Enter Number / Wallet"><br>
+      <button class="submit-withdraw" onclick="submitWithdraw()">Submit</button>
+    </div>
   </div>
 
   <script>
-    const phone = localStorage.getItem("userPhone");
-    const balanceEl = document.getElementById("balance");
-    const phoneEl = document.getElementById("userPhone");
-    const taskListEl = document.getElementById("taskList");
+    let balance = 0;
 
-    const channels = [
-      "https://t.me/channel1", "https://t.me/channel2", "https://t.me/channel3",
-      "https://t.me/channel4", "https://t.me/channel5", "https://t.me/channel6",
-      "https://t.me/channel7", "https://t.me/channel8", "https://t.me/channel9",
-      "https://t.me/channel10"
-    ];
+    function updateBalance(amount) {
+      balance += amount;
+      document.getElementById("balance").innerText = balance;
+    }
 
-    let balance = parseInt(localStorage.getItem("userBalance")) || 0;
-    let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
-
-    phoneEl.innerText = phone;
-    balanceEl.innerText = `${balance}`;
-
-    channels.forEach((link, index) => {
-      const isDone = completedTasks.includes(index);
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <a href="${link}" target="_blank">Join Channel ${index + 1}</a>
-        <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
-          ${isDone ? " Done" : " "}
-        </button>
-      `;
-      taskListEl.appendChild(li);
-    });
-
-    function completeTask(index) {
-      if (!completedTasks.includes(index)) {
-        completedTasks.push(index);
-        balance += 50;
-        localStorage.setItem("userBalance", balance);
-        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
-        location.reload();
+    function completeTask(button) {
+      if (!button.disabled) {
+        updateBalance(2);
+        button.innerText = "Done";
+        button.disabled = true;
       }
     }
+
+    function showWithdraw() {
+      document.getElementById("withdraw-form").style.display = "block";
+    }
+
+    function submitWithdraw() {
+      let method = document.getElementById("method").value;
+      let account = document.getElementById("account").value;
+
+      if (!account) {
+        alert("Please enter your account/wallet number.");
+        return;
+      }
+
+      alert(`Withdraw request sent to ${method} number: ${account}`);
+    }
+
+    // Load tasks
+    const tasksContainer = document.getElementById("tasks");
+    for (let i = 1; i <= 10; i++) {
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task";
+      taskDiv.innerHTML = `
+        <a href="https://t.me/example_channel${i}" target="_blank">Join Channel ${i}</a>
+        <button onclick="completeTask(this)">Get</button>
+      `;
+      tasksContainer.appendChild(taskDiv);
+    }
+
+    // Optional: Load user name from localStorage or preset
+    document.getElementById("username").innerText = "Hi";  // Change this dynamically if needed
   </script>
 </body>
 </html>
