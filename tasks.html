@@ -2,7 +2,8 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>আপনার টাস্কসমূহ</title>
+  <title>টেলিগ্রাম টাস্ক</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
@@ -13,56 +14,70 @@
       background-position: center;
       background-repeat: no-repeat;
       min-height: 100vh;
-      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
       background-color: rgba(0, 0, 0, 0.7);
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 15px;
+      border-radius: 12px;
       width: 90%;
-      max-width: 500px;
+      max-width: 330px;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
       text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    h2, h3, p {
+      margin: 5px 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+    }
+
+    li {
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    a {
+      color: #00e5ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
     }
 
     button {
       background-color: #ff5722;
       color: white;
       border: none;
-      padding: 10px 15px;
-      margin-top: 8px;
+      padding: 5px 10px;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 12px;
     }
 
     button:disabled {
-      background-color: gray;
-      cursor: not-allowed;
+      background-color: #555;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-
-    li {
-      background: rgba(255, 255, 255, 0.1);
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    a {
-      color: #00e5ff;
-      text-decoration: none;
-      margin-right: 10px;
-    }
-
-    h2, h3 {
-      margin-bottom: 10px;
+    .withdraw-btn {
+      margin-top: 12px;
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #ff5722;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -74,7 +89,7 @@
 
     <ul class="task-list" id="taskList"></ul>
 
-    <button onclick="window.location.href='withdraw.html'">💰 Withdraw</button>
+    <button class="withdraw-btn" onclick="window.location.href='withdraw.html'">💰 Withdraw</button>
   </div>
 
   <script>
@@ -84,10 +99,10 @@
     const taskListEl = document.getElementById("taskList");
 
     const channels = [
-      "https://t.me/tonkeeper_news", "https://t.me/Coinstore_Bangli_NEWS", "https://t.me/onlinejob_bd64",
-      "https://t.me/premium", "https://t.me/IncomeTipss24", "https://t.me/freecashall",
-      "https://t.me/CryptoHouse_BD", "https://t.me/Club_In999", "https://t.me/hg_wb",
-      "https://t.me/bangladeshupdatenews"
+      "https://t.me/channel1", "https://t.me/channel2", "https://t.me/channel3",
+      "https://t.me/channel4", "https://t.me/channel5", "https://t.me/channel6",
+      "https://t.me/channel7", "https://t.me/channel8", "https://t.me/channel9",
+      "https://t.me/channel10"
     ];
 
     let balance = parseInt(localStorage.getItem("userBalance")) || 0;
