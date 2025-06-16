@@ -2,79 +2,75 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>টাস্ক সাইট</title>
-  <link rel="stylesheet" href="style.css">
+  <title>আপনার টাস্কসমূহ</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-image: url('static/dollar.jpg'); /* ✅ ডলারের ব্যাকগ্রাউন্ড */
+      font-family: 'Arial', sans-serif;
+      background-image: url("dollar.jpg"); /* Ensure 'dollar.jpg' is in same folder */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      color: #fff;
+      min-height: 100vh;
+      color: white;
     }
 
     .container {
-      max-width: 600px;
+      background-color: rgba(0, 0, 0, 0.6);
       margin: 50px auto;
-      background-color: rgba(0, 0, 0, 0.75); /* আধা স্বচ্ছ ব্যাকগ্রাউন্ড */
-      padding: 30px;
-      border-radius: 16px;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    ul.task-list {
+    button {
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:disabled {
+      background-color: gray;
+    }
+
+    ul {
       list-style: none;
       padding: 0;
     }
 
-    ul.task-list li {
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #333;
-      padding: 10px;
-      border-radius: 8px;
+    li {
+      margin: 10px 0;
     }
 
-    ul.task-list a {
-      color: #00bfff;
+    a {
+      color: #00e5ff;
       text-decoration: none;
+      margin-right: 10px;
     }
 
-    button {
-      background-color: #8b5cf6;
-      color: white;
-      padding: 8px 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    button[disabled] {
-      background-color: #555;
-      cursor: not-allowed;
-    }
-
-    button:hover:not([disabled]) {
-      background-color: #7c3aed;
+    h2, h3 {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>আপনার নম্বর: <span id="userPhone"></span></h2>
+    <h2>স্বাগতম: <span id="userPhone"></span></h2>
     <h3>বর্তমান ব্যালেন্স: <span id="balance">৳0</span></h3>
-    <p>প্রতি টাস্কে পাবেন ৫০ টাকা! নিচের চ্যানেলগুলো জয়েন করুন:</p>
+    <p>প্রতি টাস্ক কমপ্লিটে পাবেন ৳৫০!</p>
     <ul class="task-list" id="taskList"></ul>
 
     <br><br>
-    <button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;">💸 Withdraw</button>
+    <button onclick="window.location.href='withdraw.html'">💰 Withdraw</button>
   </div>
 
   <script>
@@ -93,16 +89,16 @@
     let balance = parseInt(localStorage.getItem("userBalance")) || 0;
     let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
 
-    phoneEl.innerText = phone || "N/A";
+    phoneEl.innerText = phone;
     balanceEl.innerText = `৳${balance}`;
 
     channels.forEach((link, index) => {
       const isDone = completedTasks.includes(index);
       const li = document.createElement("li");
       li.innerHTML = `
-        <a href="${link}" target="_blank">Channel ${index + 1}</a>
+        <a href="${link}" target="_blank">Join Channel ${index + 1}</a>
         <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
-          ${isDone ? "✅ Done" : "Join"}
+          ${isDone ? "✅ Done" : "✅ কমপ্লিট"}
         </button>
       `;
       taskListEl.appendChild(li);
