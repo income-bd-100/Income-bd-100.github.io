@@ -1,60 +1,51 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>আপনার টাস্কসমূহ</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>ভেরিফাই কোড</title>
+    <style>
+        body {
+            text-align: center;
+            margin-top: 100px;
+            font-family: 'Arial', sans-serif;
+            background-image: url('static/dollar.jpg'); /* অথবা শুধুই 'dollar.jpg' যদি ফোল্ডারে থাকে */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+
+        .warning {
+            font-size: 80px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .enter-button {
+            background-color: #ff5722;
+            color: black;
+            border: 3px solid #333;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 4px 4px 0 #888;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 50px;
+        }
+
+        .enter-button:hover {
+            background-color: #e64a19;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>স্বাগতম: <span id="userPhone"></span></h2>
-    <h3>বর্তমান ব্যালেন্স: <span id="balance">৳0</span></h3>
-    <p>প্রতি টাস্ক কমপ্লিটে পাবেন ৳৫০!</p>
-    <ul class="task-list" id="taskList"></ul>
-     <br><br>
-    <button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;"> Withdraw</button>
-  </div>
 
-  <script>
-    const phone = localStorage.getItem("userPhone");
-    const balanceEl = document.getElementById("balance");
-    const phoneEl = document.getElementById("userPhone");
-    const taskListEl = document.getElementById("taskList");
+    <div class="warning">সঠিকভাবে লগইন হয়েছে ✅</div>
 
-    const channels = [
-      "https://t.me/tonkeeper_news", "https://t.me/Coinstore_Bangli_NEWS", "https://t.me/onlinejob_bd64",
-      "https://t.me/premium", "https://t.me/IncomeTipss24", "https://t.me/freecashall",
-      "https://t.me/CryptoHouse_BD", "https://t.me/Club_In999", "https://t.me/hg_wb",
-      "https://t.me/bangladeshupdatenews"
-    ];
+    <a href="https://income-bd-100.github.io/tasks.html" class="enter-button">ইনকাম সাইটে প্রবেশ করুন</a>
 
-    let balance = parseInt(localStorage.getItem("userBalance")) || 0;
-    let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
-
-    phoneEl.innerText = phone;
-    balanceEl.innerText = `৳${balance}`;
-
-    channels.forEach((link, index) => {
-      const isDone = completedTasks.includes(index);
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <a href="${link}" target="_blank">Join Channel ${index + 1}</a>
-        <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
-          ${isDone ? "✅ Done" : "✅ কমপ্লিট"}
-        </button>
-      `;
-      taskListEl.appendChild(li);
-    });
-
-    function completeTask(index) {
-      if (!completedTasks.includes(index)) {
-        completedTasks.push(index);
-        balance += 50;
-        localStorage.setItem("userBalance", balance);
-        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
-        location.reload();
-      }
-    }
-  </script>
 </body>
 </html>
