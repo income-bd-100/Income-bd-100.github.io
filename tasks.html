@@ -1,51 +1,122 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <title>ভেরিফাই কোড</title>
-    <style>
-        body {
-            text-align: center;
-            margin-top: 100px;
-            font-family: 'Arial', sans-serif;
-            background-image: url('static/dollar.jpg'); /* অথবা শুধুই 'dollar.jpg' যদি ফোল্ডারে থাকে */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: white;
-        }
+  <meta charset="UTF-8">
+  <title>টাস্ক সাইট</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('static/dollar.jpg'); /* ✅ ডলারের ব্যাকগ্রাউন্ড */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+    }
 
-        .warning {
-            font-size: 80px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: rgba(0, 0, 0, 0.75); /* আধা স্বচ্ছ ব্যাকগ্রাউন্ড */
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
 
-        .enter-button {
-            background-color: #ff5722;
-            color: black;
-            border: 3px solid #333;
-            padding: 20px 40px;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 5px;
-            box-shadow: 4px 4px 0 #888;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 50px;
-        }
+    ul.task-list {
+      list-style: none;
+      padding: 0;
+    }
 
-        .enter-button:hover {
-            background-color: #e64a19;
-        }
-    </style>
+    ul.task-list li {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    ul.task-list a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    button {
+      background-color: #8b5cf6;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button[disabled] {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    button:hover:not([disabled]) {
+      background-color: #7c3aed;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>আপনার নম্বর: <span id="userPhone"></span></h2>
+    <h3>বর্তমান ব্যালেন্স: <span id="balance">৳0</span></h3>
+    <p>প্রতি টাস্কে পাবেন ৫০ টাকা! নিচের চ্যানেলগুলো জয়েন করুন:</p>
+    <ul class="task-list" id="taskList"></ul>
 
-    <div class="warning">সঠিকভাবে লগইন হয়েছে ✅</div>
+    <br><br>
+    <button onclick="window.location.href='withdraw.html'" style="background-color:#ff5722;">💸 Withdraw</button>
+  </div>
 
-    <a href="https://income-bd-100.github.io/tasks.html" class="enter-button">ইনকাম সাইটে প্রবেশ করুন</a>
+  <script>
+    const phone = localStorage.getItem("userPhone");
+    const balanceEl = document.getElementById("balance");
+    const phoneEl = document.getElementById("userPhone");
+    const taskListEl = document.getElementById("taskList");
 
+    const channels = [
+      "https://t.me/tonkeeper_news", "https://t.me/Coinstore_Bangli_NEWS", "https://t.me/onlinejob_bd64",More actions
+      "https://t.me/premium", "https://t.me/IncomeTipss24", "https://t.me/freecashall",
+      "https://t.me/CryptoHouse_BD", "https://t.me/Club_In999", "https://t.me/hg_wb",
+      "https://t.me/bangladeshupdatenews"
+    ];
+
+    let balance = parseInt(localStorage.getItem("userBalance")) || 0;
+    let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
+
+    phoneEl.innerText = phone || "N/A";
+    balanceEl.innerText = `৳${balance}`;
+
+    channels.forEach((link, index) => {
+      const isDone = completedTasks.includes(index);
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <a href="${link}" target="_blank">Channel ${index + 1}</a>
+        <button onclick="completeTask(${index})" ${isDone ? "disabled" : ""}>
+          ${isDone ? "✅ Done" : "Join"}
+        </button>
+      `;
+      taskListEl.appendChild(li);
+    });
+
+    function completeTask(index) {
+      if (!completedTasks.includes(index)) {
+        completedTasks.push(index);
+        balance += 50;
+        localStorage.setItem("userBalance", balance);
+        localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+        location.reload();
+      }
+    }
+  </script>
 </body>
 </html>
