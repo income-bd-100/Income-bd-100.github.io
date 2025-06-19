@@ -85,7 +85,7 @@
   <div class="container">
     <h2>স্বাগতম: <span id="userPhone"></span></h2>
     <h3>বর্তমান ব্যালেন্স: <span id="balance">৳0</span></h3>
-    <p>প্রতি টাস্ক কমপ্লিটে পাবেন ৳৫০!</p>
+    <p>প্রতি টাস্ক কমপ্লিটে পাবেন ৳২০!</p>
 
     <ul class="task-list" id="taskList"></ul>
 
@@ -126,7 +126,7 @@
     function completeTask(index) {
       if (!completedTasks.includes(index)) {
         completedTasks.push(index);
-        balance += 50;
+        balance += 20; // প্রতি টাস্কে ২০ টাকা
         localStorage.setItem("userBalance", balance);
         localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
         location.reload();
